@@ -1,0 +1,11 @@
+---
+- name: reload sysctl
+  ansible.builtin.command: sysctl --system
+  changed_when: false
+
+- name: restart auditd
+  ansible.builtin.systemd:
+    name: auditd
+    state: restarted
+    enabled: true
+

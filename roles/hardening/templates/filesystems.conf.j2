@@ -1,0 +1,4 @@
+{% for fs in blacklist_filesystems %}
+blacklist {{ fs }}
+install {{ fs }} /bin/true
+{% endfor %}

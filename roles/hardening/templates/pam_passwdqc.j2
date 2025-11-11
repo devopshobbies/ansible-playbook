@@ -1,0 +1,8 @@
+Name: {{ passwdqc.name }}
+Default: {{ passwdqc.default }}
+Priority: {{ passwdqc.priority }}
+Password-Type: {{ passwdqc.password_type }}
+Password:
+  requisite pam_passwdqc.so retry={{ passwdqc.retry }} min={{ passwdqc.min | join(',') }} max={{ passwdqc.max }} enforce={{ passwdqc.enforce }}
+Password-Initial:
+  requisite pam_passwdqc.so retry={{ passwdqc.retry }} min={{ passwdqc.min | join(',') }} max={{ passwdqc.max }} enforce={{ passwdqc.enforce }}
