@@ -48,7 +48,7 @@ Use the provided playbooks to roll out the baseline to fresh hosts or incorporat
          hosts:
            web01:
              ansible_host: 192.0.2.10
-             ansible_user: admin
+             ansible_user: root
              ansible_port: 22
    ```
 
