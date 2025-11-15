@@ -2,4 +2,4 @@
   hosts: servers
   gather_facts: true
   roles:
-    - hardening
+    - Hardening_Server
