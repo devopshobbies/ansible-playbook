@@ -1,4 +1,4 @@
 ---
 - name: config server 
   import_tasks: hardening.yml
-  tags: always
+  tags: config_server

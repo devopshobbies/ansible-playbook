@@ -1,3 +1,7 @@
-#SPDX-License-Identifier: MIT-0
 ---
-# handlers file for SSH_Hardenig
+- name: restart ssh
+  ansible.builtin.service:
+    name: ssh
+    state: restarted
+    enabled: true
+

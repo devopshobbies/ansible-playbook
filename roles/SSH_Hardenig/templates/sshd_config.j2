@@ -1,0 +1,40 @@
+Port {{ sshd_port }}
+Protocol 2
+{% for hk in sshd_host_keys -%}
+HostKey {{ hk }}
+{% endfor %}
+
+PermitRootLogin {{ sshd_permit_root_login }}
+PasswordAuthentication {{ sshd_password_authentication }}
+KbdInteractiveAuthentication {{ sshd_kbd_interactive_authentication }}
+ChallengeResponseAuthentication {{ sshd_challenge_response_authentication }}
+PubkeyAuthentication {{ sshd_pubkey_authentication }}
+
+X11Forwarding {{ sshd_x11_forwarding }}
+AllowAgentForwarding {{ sshd_allow_agent_forwarding }}
+AllowTcpForwarding {{ sshd_allow_tcp_forwarding }}
+PermitTunnel {{ sshd_permit_tunnel }}
+AllowStreamLocalForwarding {{ sshd_allow_stream_local_forwarding }}
+PermitUserEnvironment {{ sshd_permit_user_environment }}
+
+ClientAliveInterval {{ sshd_client_alive_interval }}
+ClientAliveCountMax {{ sshd_client_alive_count_max }}
+LoginGraceTime {{ sshd_login_grace_time }}
+MaxAuthTries {{ sshd_max_auth_tries }}
+MaxSessions {{ sshd_max_sessions }}
+UsePAM {{ sshd_use_pam }}
+PrintMotd {{ sshd_print_motd }}
+PrintLastLog {{ sshd_print_last_log }}
+UseDNS {{ sshd_use_dns }}
+
+# Strong crypto (aligned with DevSec)
+Ciphers {{ sshd_ciphers | join(',') }}
+MACs {{ sshd_macs | join(',') }}
+KexAlgorithms {{ sshd_kex | join(',') }}
+
+# Logging
+SyslogFacility {{ sshd_syslog_facility }}
+LogLevel {{ sshd_log_level }}
+
+RevokedKeys {{ sshd_revoked_keys_file }}
+Subsystem sftp {{ sshd_subsystem_sftp }}

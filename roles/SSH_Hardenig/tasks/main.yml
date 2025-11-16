@@ -1,3 +1,6 @@
-#SPDX-License-Identifier: MIT-0
 ---
-# tasks file for SSH_Hardenig
+- name: config ssh
+  import_tasks: SSH.yml
+  tags: config_ssh
+
+
