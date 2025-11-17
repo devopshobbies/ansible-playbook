@@ -40,16 +40,15 @@ Use the provided playbooks to roll out the baseline to fresh hosts or incorporat
 
 1. Update the example inventory:
 
-   ```yaml
-   # inventory/inventory.yml
-   all:
-     children:
-       servers:
-         hosts:
-           web01:
-             ansible_host: 192.0.2.10
-             ansible_user: root
-             ansible_port: 22
+```yaml
+all:
+  children:
+    servers:
+      hosts:
+        server_group1:
+          ansible_host: ""
+          ansible_user: ""
+          ansible_port: ""
    ```
 
 2. (Optional) Test connectivity:
