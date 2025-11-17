@@ -1,38 +1,52 @@
-Role Name
-=========
+## Role Layout (what each directory is for)
 
-A brief description of the role goes here.
+- **defaults/**  
+  Low-precedence variables that define the role’s sensible defaults.  
+  Put `defaults/main.yml` here. These are safe to override from inventory or playbooks.
 
-Requirements
-------------
+- **vars/**  
+  Higher-precedence variables that are more “opinionated” for this role.  
+  Put `vars/main.yml` here. Only use when a value should rarely be overridden.
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- **tasks/**  
+  The role’s execution logic.  
+  `tasks/main.yml` is the entry point that can include task files like `sysctl.yml`, `pam.yml`, `audit.yml`, `ssh.yml`, etc.
 
-Role Variables
---------------
+- **handlers/**  
+  Actions triggered by `notify` (e.g., “restart sshd”, “reload sysctl”).  
+  Define them in `handlers/main.yml`.
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+- **templates/**  
+  Jinja2 templates rendered on the target (e.g., `filesystems.conf.j2`, `faillock.conf.j2`, `login.defs.j2`).  
+  Reference them from tasks via the `template` module.
 
-Dependencies
-------------
+- **meta/**  
+  Role metadata in `meta/main.yml` (author, supported platforms, dependencies).  
+  Useful for Galaxy and for documenting expectations.
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+- **tests/**  
+  Lightweight scenarios, example inventories, or Molecule-style scaffolding to prove the role runs successfully.
 
-Example Playbook
-----------------
+---
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+## Requirements
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+- Ansible on the control node.
+- Linux targets that match the hardening assumptions in this role (Debian/Ubuntu family by default).
+- `become: true` during execution (the role changes system files).
 
-License
--------
+---
 
-BSD
+## Variables
 
-Author Information
-------------------
+Review `defaults/main.yml` for all tunables (conservative by default).  
+Override in `group_vars/` or `host_vars/` to fit your environment (e.g., SSH policy, faillock thresholds, umask, sysctl keys).
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+---
+
+## Quick Start
+
+Run the role with your own inventory and a simple playbook:
+
+```bash
+ansible-playbook -i INVENTORY_PATH/inventory.yml playbooks/SSH.yml
