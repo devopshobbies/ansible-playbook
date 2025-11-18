@@ -1,0 +1,5 @@
+- name: SSHHardening
+  hosts: servers
+  gather_facts: true
+  roles:
+    - SSH_Hardening
