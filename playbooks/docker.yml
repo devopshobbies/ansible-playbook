@@ -1,0 +1,5 @@
+- name: Docker
+  hosts: servers
+  gather_facts: true
+  roles:
+    - Docker
