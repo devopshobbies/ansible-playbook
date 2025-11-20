@@ -37,21 +37,13 @@
     - docker-ce-cli
     - containerd.io
 
-  notify: start and enable docker
-
 - name: Update repo list
   apt:
     update_cache: yes
     cache_valid_time: 3600
 
   notify: restart docker
-
-- name: Restart service docker and daemon-reload to pick up config changes
-  ansible.builtin.systemd:
-    state: restarted
-    daemon_reload: yes
-    name: docker
-
+  changed_when: true
 - name: Get the latest release tag from Docker Compose GitHub
   uri:
     url: https://api.github.com/repos/docker/compose/releases/latest
