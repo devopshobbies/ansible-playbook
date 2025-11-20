@@ -44,6 +44,7 @@
 
   notify: restart docker
   changed_when: true
+  
 - name: Get the latest release tag from Docker Compose GitHub
   uri:
     url: https://api.github.com/repos/docker/compose/releases/latest
