@@ -51,6 +51,8 @@ auditd_config:
   action_mail_acct: "root"
   space_left: 75
   admin_space_left: 50
+
+  
 legacy_packages_remove:
   - xinetd
   - inetutils-inetd
