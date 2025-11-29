@@ -84,7 +84,7 @@ Key actions include:
 All tunables are exposed in `defaults/main.yml`; override them in inventory/group vars to adapt to your policy.
 
 ---
-# Session 2 
+# Session 2 - SSH
 ## Hardening SSH
 * Restricts supported ciphers, MACs, and key exchange algorithms.
 * Configures banner text, login grace period, and max authentication attempts.
@@ -189,4 +189,74 @@ Customize behavior through `defaults/main.yml` (e.g., `sshd_port`, crypto suites
    ```bash
    ansible-playbook -i inventory/inventory.yml playbooks/SSH.yml
    ```
+---
+# Session 2 - Docker 
+
+## What the role do
+
+# Docker Installation Ansible Role
+
+This Ansible role automates the installation and configuration of **Docker** and **Docker Compose** on Ubuntu-based systems.
+It ensures that all required dependencies, repositories, and binaries are properly installed and up to date.
+
+## Features
+
+* Updates and upgrades APT packages
+* Installs required Docker dependencies
+* Adds Docker’s official GPG key and repository
+* Installs Docker Engine, CLI, and containerd
+* Downloads and installs the latest Docker Compose release directly from GitHub
+* Includes a handler to restart Docker when needed
+
+---
+
+## Tasks Overview
+
+### 1. **Update and upgrade apt packages**
+
+Updates the APT cache and upgrades existing system packages to ensure the system is prepared for Docker installation.
+
+### 2. **Install dependencies**
+
+Installs essential packages needed for Docker installation such as:
+
+* `apt-transport-https`
+* `curl`
+* `ca-certificates`
+* `gnupg-agent`
+* `software-properties-common`
+
+These packages allow the system to handle HTTPS repositories and manage GPG keys.
+
+### 3. **Give Docker GPG key**
+
+Downloads and adds Docker’s official GPG key to the system so that package authenticity can be verified.
+
+### 4. **Add Docker repository**
+
+Adds Docker’s stable repository for Ubuntu (`bionic` in this example) to APT sources so that the latest official Docker packages can be installed.
+
+### 5. **Install Docker**
+
+Installs:
+
+* `docker-ce`
+* `docker-ce-cli`
+* `containerd.io`
+
+This ensures a complete Docker installation including the CLI and container runtime.
+
+### 6. **Update repo list**
+
+Refreshes the APT cache after adding the Docker repository.
+Triggers a handler to restart Docker if changes occur.
+
+### 7. **Fetch latest Docker Compose release**
+
+Queries the Docker Compose GitHub API to retrieve the tag name of the latest release.
+
+### 8. **Install or upgrade Docker Compose**
+
+Downloads the corresponding Docker Compose binary and places it in `/usr/local/bin/compose` with executable permissions.
+
 ---
