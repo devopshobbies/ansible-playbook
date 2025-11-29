@@ -1,3 +1,2 @@
-#SPDX-License-Identifier: MIT-0
 ---
-# defaults file for Gitlab
+project_path: /opt/projects

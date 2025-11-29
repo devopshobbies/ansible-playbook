@@ -1,0 +1,10 @@
+---
+- name: createsProjectsDirectory
+  ansible.builtin.file:
+    path: "{{ project_path }}"
+    state: directory
+
+- name: Copy whole files
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/"  
+    dest: "{{ project_path }}"
