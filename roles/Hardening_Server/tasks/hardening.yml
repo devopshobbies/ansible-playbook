@@ -125,7 +125,7 @@
 
 - name: Enforce umask 027 globally (/etc/profile.d)
   ansible.builtin.copy:
-    dest: /etc/profile.d/99-hardening-umask.sh
+    dest: /etc/profile.d/umask.sh
     mode: "0644"
     owner: root
     group: root
