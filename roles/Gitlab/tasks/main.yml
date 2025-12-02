@@ -3,4 +3,9 @@
   import_tasks: docker-setup.yml
   tags: gitlab_setup
 
+- name: gitlab backup 
+  import_tasks: backup.yml
+  tags: gitlab_backup
+
+
 
