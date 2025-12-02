@@ -8,3 +8,17 @@
   ansible.builtin.copy:
     src: "{{ role_path }}/files/"  
     dest: "{{ project_path }}"
+  
+- name: Harden .env permissions
+  ansible.builtin.file:
+    path: "{{ project_path }}/.env"
+    mode: "0600"
+
+- name: Bring up stack with Docker Compose
+  community.docker.docker_compose_v2:
+    project_src: "{{ project_path }}"
+    files: ["compose.yml"]
+    state: present
+    pull: missing
+    remove_orphans: true
+  register: compose_result
