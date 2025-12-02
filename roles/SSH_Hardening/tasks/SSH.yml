@@ -1,0 +1,83 @@
+---
+- name: Create a login user
+  ansible.builtin.user:
+      name: ubuntu
+      password: '$6$iMNClsUEOVAFcGs0$f/siPQ9SnhjWRekhTLRxZIZWWmWnz5lmlfQ846znys9nyBujw1gDIyK8nc0IHdVesHYBGFZyhO3qRlvGWch4p/'
+      groups: 
+       - sudo
+      state: present
+      shell: /bin/bash      
+      system: no            
+      createhome: yes        
+      home: /home/ubuntu
+  
+- name: Creates directory
+  ansible.builtin.file:
+    path: /home/ubuntu/.ssh
+    state: directory
+    mode: '0700'
+    owner: ubuntu
+
+- name: Create a new file with permissions
+  ansible.builtin.file:
+      path: "/home/ubuntu/.ssh/authorized_keys"
+      state: touch
+      mode: '0600'
+
+- name: Copy SSH key to authorized_keys
+  ansible.builtin.lineinfile:
+    path: /home/ubuntu/.ssh/authorized_keys
+    line: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG/bKFqO5ic6BkUX6E4RN0L612KGKp1drnOZPGgCWUvb amir@AmirKolahi"
+    create: yes
+    mode: '0600'
+    owner: ubuntu
+    group: ubuntu
+    state: present
+    
+- name: Setup alternate sshd config
+  ansible.builtin.lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    regex: "^(#)?{{item.key}}"
+    line: "{{ item.key }} {{item.value}}"
+    state: present
+  with_dict: '{{ sshd_config }}'
+
+- name: Copy ssh banner file
+  copy:
+    src: ssh_banner
+    dest: /etc/issue.net
+    
+- name: Copy ssh banner file
+  copy:
+    src: ssh_banner
+    dest: /etc/issue
+    
+- name: Update and upgrade apt packages
+  apt:
+    upgrade: yes
+    update_cache: yes
+    cache_valid_time: 86400
+    
+- name: Install basic tools
+  apt:
+    name: "{{ packages }}"
+    state: present
+    force_apt_get: yes
+    update_cache: yes
+
+- name: Make iptables configuration file
+  template:
+    src: iptables_config.j2
+    dest: /etc/iptables/rules.v4
+ 
+- name: Restart ssh service
+  service:
+    name: ssh
+    state: restarted
+
+- name: restore iptables state from a file
+  community.general.iptables_state:
+    state: restored
+    path: /etc/iptables/rules.v4
+    noflush: true
+  notify: Restart iptables

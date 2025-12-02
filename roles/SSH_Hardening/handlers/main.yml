@@ -5,3 +5,23 @@
     state: restarted
     enabled: true
 
+- name: Restart iptables
+  systemd:
+    name: iptables
+    state: restarted
+
+- name: start and enable docker
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: restart docker
+  service:
+    name: docker
+    state: restarted
+
+- name: Disable ufw
+  systemd:
+    name: ufw
+    state: stopped
