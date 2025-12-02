@@ -1,0 +1,5 @@
+- name: Gitlab
+  hosts: servers
+  gather_facts: true
+  roles:
+    - Gitlab
