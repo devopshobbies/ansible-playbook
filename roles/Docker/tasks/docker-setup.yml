@@ -27,6 +27,11 @@
     repo: deb https://download.docker.com/linux/ubuntu bionic stable
     state: present
 
+- name: Update repo list
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
 - name: install docker
   apt:
     name: "{{item}}"
@@ -36,11 +41,6 @@
     - docker-ce
     - docker-ce-cli
     - containerd.io
-
-- name: Update repo list
-  apt:
-    update_cache: yes
-    cache_valid_time: 3600
 
   notify: restart docker
   changed_when: true
