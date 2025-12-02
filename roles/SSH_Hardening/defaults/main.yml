@@ -7,6 +7,7 @@ sshd_config:
   AllowAgentForwarding: "no"
   AllowTcpForwarding: "no"
   X11Forwarding: "no"
+  Banner: "/etc/issue"
   PrintMotd: "no"
   TCPKeepAlive: "no"
   Compression: "no"
