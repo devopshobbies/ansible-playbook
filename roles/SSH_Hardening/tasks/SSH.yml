@@ -2,7 +2,7 @@
 - name: Create a login user
   ansible.builtin.user:
       name: ubuntu
-      password: '$6$iMNClsUEOVAFcGs0$f/siPQ9SnhjWRekhTLRxZIZWWmWnz5lmlfQ846znys9nyBujw1gDIyK8nc0IHdVesHYBGFZyhO3qRlvGWch4p/'
+      password: ''
       groups: 
        - sudo
       state: present
