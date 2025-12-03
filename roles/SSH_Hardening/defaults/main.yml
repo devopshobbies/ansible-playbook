@@ -9,6 +9,7 @@ sshd_config:
   X11Forwarding: "no"
   Banner: "/etc/issue"
   PrintMotd: "no"
+  Banner: "/etc/issue"
   TCPKeepAlive: "no"
   Compression: "no"
   ClientAliveCountMax: "2"
