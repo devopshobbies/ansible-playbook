@@ -1,0 +1,23 @@
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:${image_tag}
+    container_name: gitlab
+    hostname: ${gitlab_domain}
+    restart: ${restart_policy}
+
+    volumes:
+      - gitlab_data:/var/opt/gitlab
+      - gitlab_log:/var/log/gitlab
+      - gitlab_backup:/var/opt/gitlab/backups
+      - gitlab_config:/etc/gitlab
+      - ./gitlab.rb:/etc/gitlab/gitlab.rb
+
+volumes:
+  gitlab_data:
+    name: gitlab_data
+  gitlab_log:
+    name: gitlab_log
+  gitlab_backup:
+    name: gitlab_backups
+  gitlab_config:
+    name: gitlab_config

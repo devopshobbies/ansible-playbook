@@ -1,0 +1,19 @@
+
+
+
+
+
+
+
+
+- name: Create a backup cron file 
+  cron:
+    name: "gitlab-daily-backup"
+    cron_file: "gitlab_backup"    
+    user: "root"
+    weekday: "*"
+    month: "*"
+    day: "*"
+    hour: "02"                      
+    minute: "00"
+    job: "/usr/bin/docker exec -t gitlab gitlab-backup create CRON=1"
