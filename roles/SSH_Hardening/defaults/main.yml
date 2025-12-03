@@ -1,6 +1,6 @@
 ---
 sshd_config:
-  PermitRootLogin: "yes"
+  PermitRootLogin: "no"
   Port: "2222"
   PubkeyAuthentication: "yes"
   PasswordAuthentication: "no"
@@ -9,7 +9,6 @@ sshd_config:
   X11Forwarding: "no"
   Banner: "/etc/issue"
   PrintMotd: "no"
-  Banner: "/etc/issue"
   TCPKeepAlive: "no"
   Compression: "no"
   ClientAliveCountMax: "2"
@@ -21,6 +20,7 @@ sshd_config:
   MaxSessions: "2"
   LogLevel: "VERBOSE"
   ListenAddress: "0.0.0.0"
+  AuthenticationMethods: "publickey,keyboard-interactive"
 
 packages:
   - sysstat

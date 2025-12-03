@@ -56,7 +56,7 @@
   apt:
     upgrade: yes
     update_cache: yes
-    cache_valid_time: 86400
+    cache_valid_time: 3600
     
 - name: Install basic tools
   apt:
