@@ -19,6 +19,6 @@
     project_src: "{{ project_path }}"
     files: ["compose.yml"]
     state: present
-    pull: missing
+    pull: always
     remove_orphans: true
   register: compose_result
