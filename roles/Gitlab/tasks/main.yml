@@ -1,6 +1,6 @@
 ---
 - name: gitlab setup 
-  import_tasks: composeFile.yml
+  import_tasks: composeGitlab.yml
   tags: gitlab_setup
 
 - name: gitlab backup 
