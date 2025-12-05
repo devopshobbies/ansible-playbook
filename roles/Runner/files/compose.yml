@@ -1,0 +1,9 @@
+services:
+  runner:
+    image: gitlab/gitlab-runner:alpine3.21-bleeding
+    restart: always
+    container_name: runner
+    hostname: runner
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "runner_data:/etc/gitlab-runner"
