@@ -1,4 +1,4 @@
 ---
 - name: runner setup 
-  import_tasks: composeFile.yml
+  import_tasks: composeRunner.yml
   tags: runner_setup
