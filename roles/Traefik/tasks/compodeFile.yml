@@ -1,0 +1,26 @@
+---
+- name: createsProjectsDirectory
+  ansible.builtin.file:
+    path: "{{ project_path }}"
+    state: directory
+
+- name: Copy whole files
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/"  
+    dest: "{{ project_path }}"
+
+- name: Create a docker network
+  community.docker.docker_network:
+    name: traefik_net
+    driver: overlay
+    attachable: yes  
+    state: present
+
+- name: Bring up stack with Docker Compose
+  community.docker.docker_compose_v2:
+    project_src: "{{ project_path }}"
+    files: ["compose.yml"]
+    state: restarted
+    pull: always
+    remove_orphans: true
+  register: compose_result

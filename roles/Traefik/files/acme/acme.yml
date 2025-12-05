@@ -1,0 +1,13 @@
+entryPoints:
+  web:
+    address: ":80"
+
+  websecure:
+    address: ":443"
+
+certificatesResolvers:
+  myresolver:
+    acme:
+      email: kolahiamir1@gmail.com
+      storage: acme.json
+      tlsChallenge: {}
