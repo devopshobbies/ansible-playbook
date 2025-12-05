@@ -1,4 +1,4 @@
 ---
 - name: traefik setup 
-  import_tasks: composeFile.yml
+  import_tasks: composeTraefik.yml
   tags: traefik_setup
