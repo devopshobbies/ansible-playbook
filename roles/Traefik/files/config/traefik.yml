@@ -1,0 +1,36 @@
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+
+log:
+  level: DEBUG
+
+api:
+  dashboard: true
+  insecure: true
+  insecureSkipVerify: true
+
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:         
+        entryPoint:
+          to: websecure
+          scheme: https
+  websecure:
+    address: ":443"
+
+providers:
+  docker:
+    endpoint: "unix://var/run/docker.sock"
+    exposedByDefault: false     
+    network: traefik_net         
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: "kolahiamir1@gmail.com"
+      storage: "/letsencrypt/acme.json"
+      httpChallenge:
+        entryPoint: "web"
