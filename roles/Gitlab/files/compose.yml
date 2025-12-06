@@ -14,7 +14,7 @@ services:
     environment:
       GITLAB_OMNIBUS_CONFIG: |
         # Gitlab external domain
-        external_url 'http://${gitlab_domain}'
+        external_url 'https://${gitlab_domain}'
 
         # Gitlab Root Password
         gitlab_rails['initial_root_password'] = "${gitlab_root_pass}"
@@ -62,7 +62,7 @@ services:
         gitlab_rails['backup_multipart_chunk_size'] = 104857600
 
         # Settings used by GitLab registry
-        #registry_external_url 'https://${registry_domain}'
+        registry_external_url 'https://${registry_domain}'
         registry_nginx['enable'] = true
         registry_nginx['listen_port'] = 5001
         registry_nginx['listen_https'] = false
