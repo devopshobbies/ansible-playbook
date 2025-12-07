@@ -2,3 +2,8 @@
 - name: runner setup 
   import_tasks: composeRunner.yml
   tags: runner_setup
+
+- name: runner register
+  import_tasks: composeRegister.yml
+  tags: runner_register
+

@@ -2,7 +2,7 @@ project_path: /opt/projects/runner
 
 
 runner:
-  name: DevOpsHobbies-Runner
-  endpoint: https://gitlab.amirkolahi.ir
+  name: devopshobbies-runner
+  url: https://gitlab.amirkolahi.ir
   token: 
-  default_image: docker:latest
+  image: docker:latest

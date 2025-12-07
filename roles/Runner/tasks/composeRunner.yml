@@ -13,7 +13,7 @@
   community.docker.docker_compose_v2:
     project_src: "{{ project_path }}"
     files: ["compose.yml"]
-    state: restarted
+    state: present
     pull: always
     remove_orphans: true
   register: compose_result
