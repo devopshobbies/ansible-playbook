@@ -23,14 +23,6 @@ services:
       - "traefik.http.middlewares.hsts.headers.stsPreload=true"
       - "traefik.http.middlewares.nexus-https-redirect.redirectscheme.scheme=https"
 
-      - "traefik.http.routers.hub.rule=Host(`hub.amirkolahi.ir`)"
-      - "traefik.http.routers.hub.entrypoints=websecure"
-      - "traefik.http.routers.hub.tls.certresolver=letsencrypt"
-      - "traefik.http.services.hub.loadbalancer.server.port=1404"
-      - "traefik.http.routers.hub-http.rule=Host(`hub.amirkolahi.ir`)"
-      - "traefik.http.routers.hub-http.entrypoints=web"
-      - "traefik.http.routers.hub-http.middlewares=hub-https-redirect"
-
 networks:
   traefik_net:
     external: true
