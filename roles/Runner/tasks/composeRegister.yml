@@ -1,0 +1,6 @@
+---
+- name: Register Gitlab-runners
+  ansible.builtin.template:
+    src: runner.toml.j2
+    dest: /var/lib/docker/volumes/gitlab-runner/_data/config.toml
+    

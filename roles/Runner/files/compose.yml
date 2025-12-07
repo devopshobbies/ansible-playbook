@@ -6,4 +6,4 @@ services:
     hostname: runner
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
-      - "runner_data:/etc/gitlab-runner"
+      - "gitlab_runner:/etc/gitlab-runner"
