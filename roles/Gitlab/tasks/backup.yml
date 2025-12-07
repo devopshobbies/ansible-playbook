@@ -1,14 +1,6 @@
-
-
-
-
-
-
-
-
 - name: Create a backup cron file 
   cron:
-    name: "gitlab-daily-backup"
+    name: "gitlab-backup"
     cron_file: "gitlab_backup"    
     user: "root"
     weekday: "*"
