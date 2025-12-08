@@ -2,3 +2,7 @@
 - name: nexus setup 
   import_tasks: composeNexus.yml
   tags: nexus_setup
+
+- name: Create Repo
+  import_tasks: createDockerRepo.yml
+  tags: nexus_repo

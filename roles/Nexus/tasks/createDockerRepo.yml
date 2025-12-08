@@ -1,0 +1,38 @@
+- name: Create Docker proxy repositories
+  ansible.builtin.uri:
+    url: "{{ nexus_main_url }}/service/rest/v1/repositories/docker/proxy"
+    user: "{{ nexus_username }}"
+    password: "{{ nexus_password }}"
+    method: POST
+    force_basic_auth: yes
+    status_code: [201, 400]
+    headers:
+      Content-Type: "application/json"
+    body_format: json
+    body:
+      name: "{{ item.name }}"
+      online: true
+      storage:
+        blobStoreName: "{{ item.blob }}"
+        strictContentTypeValidation: true
+        
+      proxy:
+        remoteUrl: "{{ item.remote_url }}"
+        contentMaxAge: 1440
+        metadataMaxAge: 1440
+      negativeCache:
+        enabled: true
+        timeToLive: 1440
+      httpClient:
+        blocked: false
+        autoBlock: true
+      docker:
+        v1Enabled: false
+        forceBasicAuth: false
+        httpPort: "{{ item.repo_port }}"
+        httpsPort: null
+      dockerProxy:
+        indexType: "{{ item.index_type }}"
+  loop: "{{ docker_proxies }}"
+  loop_control:
+    label: "{{ item.name }}"
