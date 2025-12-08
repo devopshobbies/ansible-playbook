@@ -4,8 +4,6 @@ project_path: "/opt/projects/nexus"
 
 nexus_main_url: "https://nexus.amirkolahi.ir"
 
-
-
 docker_proxies:
   - name: "dockerhub-proxy"
     blob: "default"
@@ -32,5 +30,5 @@ docker_proxies:
     blob: "default"
     cleanup_policy: "docker-cleanup-policy"
     remote_url: "https://registry-1.docker.io"  
-    repo_port: 1404
+    repo_port: 9091
     index_type: "HUB"
