@@ -1,11 +1,11 @@
 ---
 project_path: "/opt/projects/nexus"
 
-# Nexus Connection Details
+
 nexus_main_url: "https://nexus.amirkolahi.ir"
 
 
-# List of Docker proxy repositories to create
+
 docker_proxies:
   - name: "dockerhub-proxy"
     blob: "default"
@@ -27,10 +27,10 @@ docker_proxies:
     remote_url: "https://quay.io"
     repo_port: 8084
     index_type: "REGISTRY_V2"
-
-  - name: "hub"
+  
+  - name: "hub"   
     blob: "default"
     cleanup_policy: "docker-cleanup-policy"
-    remote_url: "https://hub.hamdocker.ir"
-    repo_port: 9091
+    remote_url: "https://registry-1.docker.io"  
+    repo_port: 1404
     index_type: "HUB"
