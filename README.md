@@ -260,3 +260,49 @@ Queries the Docker Compose GitHub API to retrieve the tag name of the latest rel
 Downloads the corresponding Docker Compose binary and places it in `/usr/local/bin/compose` with executable permissions.
 
 ---
+# Session 3 - Gitlab
+
+### Ansible Playbook for GitLab Docker Deployment
+
+This Ansible playbook automates the setup and deployment of a self-hosted GitLab instance using Docker Compose. It also configures a daily cron job to ensure regular backups of the GitLab instance.
+
+## Overview
+
+The primary goal of this project is to provide a simple and repeatable way to deploy GitLab. The playbook performs the following actions:
+1.  Creates a project directory on the target host.
+2.  Copies necessary files (like `compose.yml` and `.env`) to the project directory.
+3.  Secures the `.env` file by setting strict file permissions.
+4.  Deploys GitLab using Docker Compose, always pulling the latest image.
+5.  Schedules a daily backup of the GitLab data using a cron job.
+
+## Prerequisites
+
+### Control Node
+*   Ansible 2.10+
+
+### Target Host
+*   A user with `sudo` privileges.
+*   Docker Engine.
+*   Docker Compose V2 plugin.
+*   Python 3.x (required for Ansible modules).
+
+## Configuration
+
+Before running the playbook, you need to configure the deployment variables.
+
+1.  **Ansible Variables**:
+    Set the following variables in your inventory file or as extra-vars:
+    *   `project_path`: The absolute path on the target host where the GitLab project files will be stored (e.g., `/var/gitlab`).
+    *   `role_path`: The path to the Ansible role containing the playbook tasks and files.
+
+2.  **Project Files**:
+    Place the following files in the `files/` directory within your Ansible role:
+    *   `compose.yml`: Your Docker Compose file that defines the GitLab service and any related containers. The GitLab service should be named `gitlab` for the backup command to work correctly.
+    *   `.env`: An environment file containing sensitive data or environment-specific configurations for your Docker Compose setup (e.g., GitLab root password, domain name, etc.).
+
+## Usage
+
+To run the playbook, use the `ansible-playbook` command and specify your inventory file.
+
+```bash
+ansible-playbook -i your_inventory.yml playbooks/YOUR_PLAYBOOK
