@@ -7,5 +7,5 @@
     month: "*"
     day: "*"
     hour: "02"                      
-    minute: "00"
+    minute: "36"
     job: "/usr/bin/docker exec -t gitlab gitlab-backup create CRON=1"
