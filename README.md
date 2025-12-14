@@ -306,3 +306,57 @@ To run the playbook, use the `ansible-playbook` command and specify your invento
 
 ```bash
 ansible-playbook -i your_inventory.yml playbooks/YOUR_PLAYBOOK
+```
+---
+
+# Session 3 - Runner
+## Ansible Playbook for GitLab Runner Deployment
+
+This Ansible playbook automates the installation and registration of a GitLab Runner on a target host. It allows you to quickly add new runners to your GitLab instance (self-hosted or gitlab.com) for running CI/CD jobs.
+
+## Overview
+
+The playbook performs the following key steps:
+1.  **Repository Setup**: Adds the official GitLab Runner package repository to the system.
+2.  **Installation**: Installs the `gitlab-runner` package.
+3.  **Registration**: Registers the runner with a GitLab instance non-interactively using a registration token.
+4.  **Service Management**: Ensures the `gitlab-runner` service is started and enabled on boot.
+
+## Prerequisites
+
+### Control Node
+*   Ansible 2.10+
+*   Ansible collections `community.general` might be required for certain modules.
+
+### Target Host
+*   A Debian-based (e.g., Ubuntu) or RHEL-based (e.g., CentOS) Linux distribution. The playbook examples provided are for Debian-based systems.
+*   A user with `sudo` privileges.
+*   Network access to the GitLab instance.
+*   **Docker (Optional)**: If you plan to use the `docker` executor, Docker must be installed and running on the target host.
+
+## Configuration
+
+To run this playbook, you must configure the following variables. It is **strongly recommended** to use Ansible Vault to encrypt sensitive values like `registration_token`.
+
+| Variable               | Description                                                                                                                                     | Example Value                     |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| `gitlab_url`           | The URL of your GitLab instance.                                                                                                                | `"https://gitlab.com/"`           |
+| `registration_token`   | The runner registration token. You can find this in your GitLab project or group under **Settings > CI/CD > Runners**.                            | `"your_secret_token_here"`        |
+| `runner_description`   | A description for the runner that will appear in the GitLab UI.                                                                                 | `"Ansible Deployed Docker Runner"`  |
+| `runner_tags`          | A comma-separated list of tags for the runner, used to specify which jobs it can run.                                                           | `"docker,linux,production"`       |
+| `runner_executor`      | The executor to use for running jobs. Common choices include `shell`, `docker`, `kubernetes`.                                                     | `"docker"`                        |
+| `docker_default_image` | (Optional) The default Docker image to use if the executor is `docker` and a job does not specify an image.                                       | `"ruby:2.7"`                      |
+
+You can define these variables in your inventory, a group variables file (`group_vars/all.yml`), or pass them as extra-vars.
+
+### Example Variables File (`group_vars/all.yml`)
+```yaml
+---
+# GitLab Runner Configuration
+gitlab_url: "https://gitlab.com/"
+registration_token: "{{ vault_registration_token }}" # Stored in Ansible Vault
+runner_description: "Ansible Deployed Docker Runner"
+runner_tags: "docker,linux,production"
+runner_executor: "docker"
+docker_default_image: "ubuntu:20.04"
+
