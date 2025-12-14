@@ -1,0 +1,5 @@
+- name: Redis
+  hosts: servers
+  gather_facts: true
+  roles:
+    - Redis

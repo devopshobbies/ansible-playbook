@@ -1,0 +1,5 @@
+- name: voting app
+  hosts: servers
+  gather_facts: true
+  roles:
+    - Voting-app
