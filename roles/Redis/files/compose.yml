@@ -1,0 +1,61 @@
+---
+services:
+  redis-master:
+    image: bitnamilegacy/redis:8.2.0
+    hostname: redis-master-{{.Task.Slot}}
+    networks:
+      - redis_net
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_REPLICATION_MODE=master
+    deploy:
+      replicas: 1
+
+  redis-slave:
+    image: bitnamilegacy/redis:8.2.0
+    hostname: redis-slave-{{.Task.Slot}}
+    networks:
+      - redis_net
+    depends_on:
+      - redis-master
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis-master
+    deploy:
+      replicas: 1
+
+  redis-sentinel:
+    image: bitnamilegacy/redis-sentinel:latest
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=3000
+      - REDIS_MASTER_HOST=redis-master
+      - REDIS_SENTINEL_RESOLVE_HOSTNAMES=yes
+      - REDIS_SENTINEL_QUORUM=1
+      - REDIS_SENTINEL_FAILOVER_TIMEOUT=3000
+      - REDIS_SENTINEL_ANNOUNCE_HOSTNAMES=yes
+    deploy:
+      mode: global
+    depends_on:
+      - redis-master
+    networks:
+      - redis_net
+  proxy:
+    image: haproxy:lts
+    hostname: redis
+    volumes:
+      - /opt/projects/redis/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    networks:
+      - redis_net
+    depends_on:
+      - redis-sentinel
+    deploy:
+      replicas: 1
+
+networks:
+  redis_net:
+    name: redis_net
+    driver: overlay
+    external: false
+    attachable: true
