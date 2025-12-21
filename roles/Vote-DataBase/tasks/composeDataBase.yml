@@ -1,0 +1,31 @@
+---
+- name: createsProjectsDirectory
+  ansible.builtin.file:
+    path: "{{ project_path }}"
+    state: directory
+
+- name: Copy whole files
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/"  
+    dest: "{{ project_path }}"
+
+- name: Install python3-pip system package
+  ansible.builtin.apt:
+    name: python3-pip
+    state: present
+    update_cache: no
+  become: true
+
+- name: Install jsondiff dependency
+  ansible.builtin.pip:
+    name: jsondiff
+    extra_args: --break-system-packages
+  become: true
+
+- name: Deploy stack using Docker Swarm
+  community.docker.docker_stack:
+    name: redis_stack                  
+    state: present
+    compose:
+      - "{{ project_path }}/compose.yml"  
+  register: stack_deploy_result

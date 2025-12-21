@@ -1,3 +1,1 @@
-#SPDX-License-Identifier: MIT-0
----
-# defaults file for Vote-DataBase
+project_path: /opt/projects/postgresql
