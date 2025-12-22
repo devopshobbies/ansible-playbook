@@ -2,7 +2,7 @@
 services:
   redis-master:
     image: bitnamilegacy/redis:8.2.0
-    hostname: redis-master-{{.Task.Slot}}
+    hostname: redis-master
     networks:
       - redis_net
     environment:
@@ -11,7 +11,7 @@ services:
 
   redis-slave:
     image: bitnamilegacy/redis:8.2.0
-    hostname: redis-slave-{{.Task.Slot}}
+    hostname: redis-slave
     networks:
       - redis_net
     depends_on:
