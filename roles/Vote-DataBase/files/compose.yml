@@ -1,13 +1,20 @@
----
+
 services:
   pg-0:
     image: bitnamilegacy/postgresql-repmgr:17.6.0
+    container_name: pg-0
+    hostname: pg-0
+    restart: always
     volumes:
       - pg_0_data:/bitnami/postgresql
     networks:
       - psql_net
-    deploy:
-      replicas: 2
+    healthcheck:
+      test: ["CMD-SHELL", "export PGPASSWORD=${REPMGR_PASSWORD} && pg_isready -U repmgr -d repmgr -h 127.0.0.1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     environment:
       - POSTGRESQL_POSTGRES_PASSWORD=${POSTGRESQL_POSTGRES_PASSWORD}
       - POSTGRESQL_USERNAME=${POSTGRESQL_USERNAME}
@@ -18,17 +25,26 @@ services:
       - REPMGR_PARTNER_NODES=${REPMGR_PARTNER_NODES}
       - REPMGR_NODE_NAME=${REPMGR_NODE_NAME_0}
       - REPMGR_NODE_NETWORK_NAME=${REPMGR_NODE_NETWORK_NAME_0}
+      - REPMGR_NODE_ID=${REPMGR_NODE_ID_0}
       - REPMGR_USERNAME=${REPMGR_USERNAME}
       - REPMGR_PASSWORD=${REPMGR_PASSWORD}
+      - REPMGR_FAILOVER=${REPMGR_FAILOVER}
 
   pg-1:
     image: bitnamilegacy/postgresql-repmgr:17.6.0
+    container_name: pg-1
+    hostname: pg-1
+    restart: always
     volumes:
       - pg_1_data:/bitnami/postgresql
     networks:
       - psql_net
-    deploy:
-      replicas: 2
+    healthcheck:
+      test: ["CMD-SHELL", "export PGPASSWORD=${REPMGR_PASSWORD} && pg_isready -U repmgr -d repmgr -h 127.0.0.1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     environment:
       - POSTGRESQL_POSTGRES_PASSWORD=${POSTGRESQL_POSTGRES_PASSWORD}
       - POSTGRESQL_USERNAME=${POSTGRESQL_USERNAME}
@@ -38,32 +54,37 @@ services:
       - REPMGR_PRIMARY_HOST=${REPMGR_PRIMARY_HOST}
       - REPMGR_PARTNER_NODES=${REPMGR_PARTNER_NODES}
       - REPMGR_NODE_NAME=${REPMGR_NODE_NAME_1}
-      - REPMGR_NODE_NETWORK_NAME=${REPMGR_NODE_NETWORK_NAME_1}
+      - REPMGR_NODE_NETWORK_NAME=${REPMGR_NODE_NETWORK_NAME_1} 
+      - REPMGR_NODE_ID=${REPMGR_NODE_ID_1} 
       - REPMGR_USERNAME=${REPMGR_USERNAME}
       - REPMGR_PASSWORD=${REPMGR_PASSWORD}
       - REPMGR_FAILOVER=${REPMGR_FAILOVER}
 
   pgpool:
     image: bitnamilegacy/pgpool:4.6.3
+    container_name: pgpool
+    restart: always
     networks:
       - psql_net
-    deploy:
-      replicas: 1
+    depends_on:
+      pg-0:
+        condition: service_healthy
+      pg-1:
+        condition: service_healthy
     environment:
       - PGPOOL_BACKEND_NODES=${PGPOOL_BACKEND_NODES}
       - PGPOOL_SR_CHECK_USER=${PGPOOL_SR_CHECK_USER}
       - PGPOOL_SR_CHECK_PASSWORD=${PGPOOL_SR_CHECK_PASSWORD}
-      - PGPOOL_ENABLE_LDAP=${PGPOOL_ENABLE_LDAP}
       - PGPOOL_POSTGRES_USERNAME=${PGPOOL_POSTGRES_USERNAME}
       - PGPOOL_POSTGRES_PASSWORD=${PGPOOL_POSTGRES_PASSWORD}
       - PGPOOL_ADMIN_USERNAME=${PGPOOL_ADMIN_USERNAME}
       - PGPOOL_ADMIN_PASSWORD=${PGPOOL_ADMIN_PASSWORD}
       - PGPOOL_ENABLE_LOAD_BALANCING=${PGPOOL_ENABLE_LOAD_BALANCING}
-      - PGPOOL_POSTGRES_CUSTOM_USERS=${PGPOOL_POSTGRES_CUSTOM_USERS}
-      - PGPOOL_POSTGRES_CUSTOM_PASSWORDS=${PGPOOL_POSTGRES_CUSTOM_PASSWORDS}
       - REPMGR_FAILOVER=${REPMGR_FAILOVER}
-    depends_on:
-      - pg-0
+      - PGPOOL_HEALTH_CHECK_USER=${PGPOOL_HEALTH_CHECK_USER}
+      - PGPOOL_HEALTH_CHECK_PASSWORD=${PGPOOL_HEALTH_CHECK_PASSWORD}
+      - PGPOOL_SR_CHECK_DATABASE=${PGPOOL_SR_CHECK_DATABASE}
+
 volumes:
   pg_0_data:
     driver: local
@@ -72,7 +93,5 @@ volumes:
 
 networks:
   psql_net:
-    name: psql_net
-    driver: overlay
-    external: false
-    attachable: true
+    driver: bridge 
+
