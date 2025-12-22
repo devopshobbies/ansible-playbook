@@ -1,3 +1,4 @@
-#SPDX-License-Identifier: MIT-0
 ---
-# tasks file for Voting-app
+- name: app 
+  import_tasks: composeApp.yml
+  tags: app_setup

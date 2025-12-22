@@ -1,3 +1,1 @@
-#SPDX-License-Identifier: MIT-0
----
-# defaults file for Voting-app
+project_path: /opt/projects/app

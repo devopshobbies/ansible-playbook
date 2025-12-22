@@ -1,0 +1,70 @@
+---
+services:
+  vote:
+    image: vote:v1
+    volumes:
+     - ./vote:/usr/local/app
+    networks:
+      - redis_net
+      - traefik_net
+    command: python app.py
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vote.rule=Host(`vote.amirkolahi.ir`)"
+      - "traefik.http.routers.vote.entrypoints=websecure"
+      - "traefik.http.routers.vote.tls.certresolver=letsencrypt"
+      - "traefik.http.services.vote.loadbalancer.server.port=80"
+      - "traefik.http.routers.vote-http.rule=Host(`vote.amirkolahi.ir`)"
+      - "traefik.http.routers.vote-http.entrypoints=web"
+      - "traefik.http.routers.vote-http.middlewares=vote-https-redirect"
+      - "traefik.http.middlewares.hsts.headers.stsSeconds=63072000"
+      - "traefik.http.middlewares.hsts.headers.stsIncludeSubdomains=true"
+      - "traefik.http.middlewares.hsts.headers.stsPreload=true"
+      - "traefik.http.middlewares.vote-https-redirect.redirectscheme.scheme=https"
+
+
+
+  result:
+    image: result:v1
+    entrypoint: nodemon --inspect=0.0.0.0 server.js
+    networks:
+      - psql_net
+      - traefik_net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.result.rule=Host(`result.amirkolahi.ir`)"
+      - "traefik.http.routers.result.entrypoints=websecure"
+      - "traefik.http.routers.result.tls.certresolver=letsencrypt"
+      - "traefik.http.services.result.loadbalancer.server.port=80"
+      - "traefik.http.routers.result-http.rule=Host(`result.amirkolahi.ir`)"
+      - "traefik.http.routers.result-http.entrypoints=web"
+      - "traefik.http.routers.result-http.middlewares=result-https-redirect"
+      - "traefik.http.middlewares.hsts.headers.stsSeconds=63072000"
+      - "traefik.http.middlewares.hsts.headers.stsIncludeSubdomains=true"
+      - "traefik.http.middlewares.hsts.headers.stsPreload=true"
+      - "traefik.http.middlewares.result-https-redirect.redirectscheme.scheme=https"
+
+
+
+  worker:
+    image: worker:v1
+    networks:
+      - redis_net
+      - psql_net
+      - traefik_net
+
+volumes:
+  db-data:
+
+networks:
+  redis_net:
+    external: true
+    driver: overlay
+
+  psql_net:
+    external: true
+    driver: overlay
+
+  traefik_net:
+    external: true
+    driver: overlay
