@@ -8,8 +8,6 @@ services:
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
       - REDIS_REPLICATION_MODE=master
-    deploy:
-      replicas: 1
 
   redis-slave:
     image: bitnamilegacy/redis:8.2.0
@@ -22,8 +20,6 @@ services:
       - ALLOW_EMPTY_PASSWORD=yes
       - REDIS_REPLICATION_MODE=slave
       - REDIS_MASTER_HOST=redis-master
-    deploy:
-      replicas: 1
 
   redis-sentinel:
     image: bitnamilegacy/redis-sentinel:latest
@@ -50,12 +46,9 @@ services:
       - redis_net
     depends_on:
       - redis-sentinel
-    deploy:
-      replicas: 1
 
 networks:
   redis_net:
     name: redis_net
-    driver: overlay
+    driver: bridge
     external: false
-    attachable: true
