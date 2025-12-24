@@ -2,8 +2,6 @@
 services:
   vote:
     image: vote:v1
-    volumes:
-     - ./vote:/usr/local/app
     networks:
       - redis_net
       - traefik_net
