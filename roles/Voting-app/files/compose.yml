@@ -1,7 +1,7 @@
 ---
 services:
   vote:
-    image: vote:v1
+    image: docker.amirkolahi.ir/vote:v1.0.0
     networks:
       - redis_net
       - traefik_net
@@ -23,7 +23,7 @@ services:
 
 
   result:
-    image: result:v1
+    image: docker.amirkolahi.ir/result:v1.0.0
     entrypoint: nodemon --inspect=0.0.0.0 server.js
     networks:
       - psql_net
@@ -45,7 +45,7 @@ services:
 
 
   worker:
-    image: worker:v1
+    image: docker.amirkolahi.ir/worker:v1.0.0
     networks:
       - redis_net
       - psql_net
