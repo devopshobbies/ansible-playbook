@@ -54,19 +54,19 @@ build-result:
 #  script:
 #    - |
 #      ssh $SSH "
-#        # 1. لاگین به نکسوس در سرور مقصد (بسیار مهم)
+#    
 #        echo '$NEXUS_PASSWORD' | docker login -u '$NEXUS_USER' --password-stdin $NEXUS_REGISTRY_URL
 #
 #        cd $DEPLOY_PATH
 #
-#        # 2. دریافت ایمیج‌های جدید از نکسوس
+#       
 #        docker-compose pull
 #
-#        # 3. راه‌اندازی مجدد
+#        
 #        docker-compose down
 #        docker-compose up -d
 #
-#        # 4. پاکسازی ایمیج‌های قدیمی
+#        
 #        docker system prune -a --force
 #      "
 #  tags:
