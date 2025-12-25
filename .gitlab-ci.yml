@@ -1,0 +1,74 @@
+image: 'docker:29'
+
+.nexus_login: &nexus_login |
+  echo "$NEXUS_PASSWORD" | docker login -u "$NEXUS_USER" --password-stdin $NEXUS_REGISTRY_URL
+
+stages:
+  - build
+  #- deploy
+
+variables:
+  VERSION: v1.0.0
+
+.build_template:
+  stage: build
+  services:
+    - docker:29-dind
+  before_script:
+    - *nexus_login
+  script:
+    - 'export TAG_COMMIT=$NEXUS_REGISTRY_URL/$APP_NAME:$VERSION'
+    - 'echo "Building image tag: $TAG_COMMIT"'
+    - 'docker build -t $TAG_COMMIT -f ./voting-app/$APP_NAME/Dockerfile ./voting-app/$APP_NAME/'
+    - 'docker push $TAG_COMMIT'
+  tags:
+    - devopshobbies-runner
+
+build-worker:
+  extends: .build_template
+  variables:
+    APP_NAME: worker
+
+build-vote:
+  extends: .build_template
+  variables:
+    APP_NAME: vote
+
+build-result:
+  extends: .build_template
+  variables:
+    APP_NAME: result
+
+#deploy:
+#  stage: deploy
+#  variables:
+#    DEPLOY_PATH: '/opt/DecisionDeck'
+#    # نکته: جای user@ip آدرس واقعی سرور خود را بگذارید
+#    SSH: '-o StrictHostKeyChecking=no root@YOUR_SERVER_IP' 
+#  before_script:
+#    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+#    - eval $(ssh-agent -s)
+#    - echo "$SSH_PRIVATE_KEY" | ssh-add -
+#    - mkdir -p ~/.ssh
+#    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+#  script:
+#    - |
+#      ssh $SSH "
+#        # 1. لاگین به نکسوس در سرور مقصد (بسیار مهم)
+#        echo '$NEXUS_PASSWORD' | docker login -u '$NEXUS_USER' --password-stdin $NEXUS_REGISTRY_URL
+#
+#        cd $DEPLOY_PATH
+#
+#        # 2. دریافت ایمیج‌های جدید از نکسوس
+#        docker-compose pull
+#
+#        # 3. راه‌اندازی مجدد
+#        docker-compose down
+#        docker-compose up -d
+#
+#        # 4. پاکسازی ایمیج‌های قدیمی
+#        docker system prune -a --force
+#      "
+#  tags:
+#    - devopshobbies-runner
+#
