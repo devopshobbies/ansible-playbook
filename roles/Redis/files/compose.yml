@@ -37,15 +37,6 @@ services:
       - redis-master
     networks:
       - redis_net
-  proxy:
-    image: haproxy:lts
-    hostname: redis
-    volumes:
-      - /opt/projects/redis/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
-    networks:
-      - redis_net
-    depends_on:
-      - redis-sentinel
 
 networks:
   redis_net:
