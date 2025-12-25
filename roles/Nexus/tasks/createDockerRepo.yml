@@ -1,30 +1,4 @@
-- name: Create Proxy Repositories
-  ansible.builtin.uri:
-    url: "{{ nexus_main_url }}/service/rest/v1/repositories/docker/proxy"
-    user: "{{ nexus_username }}"
-    password: "{{ nexus_password }}"
-    method: POST
-    force_basic_auth: yes
-    status_code: [201, 400] 
-    body_format: json
-    body:
-      name: "{{ item.name }}"
-      online: true
-      storage:
-        blobStoreName: "default"
-        strictContentTypeValidation: true
-      proxy:
-        remoteUrl: "{{ item.remote_url }}"
-      docker:
-        v1Enabled: false
-        forceBasicAuth: false
-        httpPort: "{{ item.port }}"
-      dockerProxy:
-        indexType: "{{ item.index_type }}"
-  loop: "{{ docker_proxies }}"
-
-
-- name: Create 'docker-hosted' on Port 8083
+- name: Create docker-hosted
   ansible.builtin.uri:
     url: "{{ nexus_main_url }}/service/rest/v1/repositories/docker/hosted"
     user: "{{ nexus_username }}"

@@ -2,15 +2,8 @@
 project_path: "/opt/projects/nexus"
 nexus_main_url: "https://nexus.amirkolahi.ir"
 
-nexus_username: "admin"
-nexus_password: "amirkolahi!@#" 
-
 docker_proxies:
-  - name: "dockerhub-repo"
-    remote_url: "https://registry-1.docker.io"
-    port: 1404
-    index_type: "HUB"
-  
+
   - name: "gcr-proxy"
     remote_url: "https://gcr.io"
     port: 1405 
