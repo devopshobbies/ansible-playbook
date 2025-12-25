@@ -25,7 +25,7 @@ services:
       - "traefik.http.routers.hub.entrypoints=websecure"
       - "traefik.http.routers.hub.tls.certresolver=letsencrypt"
       - "traefik.http.routers.hub.service=hub" 
-      - "traefik.http.services.hub.loadbalancer.server.port=1404"
+      - "traefik.http.services.hub.loadbalancer.server.port=8083"
       - "traefik.http.routers.hub-http.rule=Host(`hub.amirkolahi.ir`)"
       - "traefik.http.routers.hub-http.entrypoints=web"
       - "traefik.http.routers.hub-http.middlewares=hub-https-redirect"

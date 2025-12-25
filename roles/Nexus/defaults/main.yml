@@ -1,34 +1,22 @@
 ---
 project_path: "/opt/projects/nexus"
-
-
 nexus_main_url: "https://nexus.amirkolahi.ir"
 
+nexus_username: "admin"
+nexus_password: "amirkolahi!@#"  # <--- پسورد واقعی نکسوس را اینجا بنویسید
+
 docker_proxies:
-  - name: "dockerhub-proxy"
-    blob: "default"
-    cleanup_policy: "docker-cleanup-policy"
+  - name: "dockerhub-repo"
     remote_url: "https://registry-1.docker.io"
-    repo_port: 1404
+    port: 1404
     index_type: "HUB"
-
+  
   - name: "gcr-proxy"
-    blob: "default"
-    cleanup_policy: "docker-cleanup-policy"
     remote_url: "https://gcr.io"
-    repo_port: 8083
-    index_type: "REGISTRY_V2"
-
-  - name: "quay-proxy"
-    blob: "default"
-    cleanup_policy: "docker-cleanup-policy"
-    remote_url: "https://quay.io"
-    repo_port: 8084
+    port: 1405   # <--- پورت امن
     index_type: "REGISTRY_V2"
   
-  - name: "hub"   
-    blob: "default"
-    cleanup_policy: "docker-cleanup-policy"
-    remote_url: "https://registry-1.docker.io"  
-    repo_port: 9091
-    index_type: "HUB"
+  - name: "quay-proxy"
+    remote_url: "https://quay.io"
+    port: 8084
+    index_type: "REGISTRY_V2"
