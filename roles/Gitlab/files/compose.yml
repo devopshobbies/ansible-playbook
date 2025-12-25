@@ -6,6 +6,8 @@ services:
     restart: ${restart_policy}
     networks:
       - traefik_net
+    ports:
+      - 2222:22
     volumes:
       - gitlab_data:/var/opt/gitlab
       - gitlab_log:/var/log/gitlab
