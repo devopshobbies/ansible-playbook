@@ -38,6 +38,31 @@ services:
     networks:
       - redis_net
 
+  proxy:
+    image: haproxy:lts
+    hostname: redis
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    networks:
+      - redis_net
+      - app_net
+    depends_on:
+      - redis-sentinel
+    deploy:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.haproxy.rule=Host(`haproxy.amirkolahi.ir`)"
+      - "traefik.http.routers.haproxy.entrypoints=websecure"
+      - "traefik.http.routers.haproxy.tls.certresolver=letsencrypt"
+      - "traefik.http.services.haproxy.loadbalancer.server.port=80"
+      - "traefik.http.routers.haproxy-http.rule=Host(`haproxy.amirkolahi.ir`)"
+      - "traefik.http.routers.haproxy-http.entrypoints=web"
+      - "traefik.http.routers.haproxy-http.middlewares=haproxy-https-redirect"
+      - "traefik.http.middlewares.hsts.headers.stsSeconds=63072000"
+      - "traefik.http.middlewares.hsts.headers.stsIncludeSubdomains=true"
+      - "traefik.http.middlewares.hsts.headers.stsPreload=true"
+      - "traefik.http.middlewares.haproxy-https-redirect.redirectscheme.scheme=https"
+
 networks:
   redis_net:
     name: redis_net
