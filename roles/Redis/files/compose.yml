@@ -45,10 +45,9 @@ services:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
     networks:
       - redis_net
-      - app_net
+      - traefik_net
     depends_on:
       - redis-sentinel
-    deploy:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.haproxy.rule=Host(`haproxy.amirkolahi.ir`)"

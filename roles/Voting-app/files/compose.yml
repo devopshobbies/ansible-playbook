@@ -57,12 +57,12 @@ volumes:
 networks:
   redis_net:
     external: true
-    driver: overlay
+    driver: bridge
 
   psql_net:
     external: true
-    driver: overlay
+    driver: bridge
 
   traefik_net:
     external: true
-    driver: overlay
+    driver: bridge
