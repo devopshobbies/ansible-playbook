@@ -3,7 +3,7 @@ project_path: "/opt/projects/nexus"
 nexus_main_url: "https://nexus.amirkolahi.ir"
 
 nexus_username: "admin"
-nexus_password: "amirkolahi!@#"  # <--- پسورد واقعی نکسوس را اینجا بنویسید
+nexus_password: "amirkolahi!@#" 
 
 docker_proxies:
   - name: "dockerhub-repo"
@@ -13,7 +13,7 @@ docker_proxies:
   
   - name: "gcr-proxy"
     remote_url: "https://gcr.io"
-    port: 1405   # <--- پورت امن
+    port: 1405 
     index_type: "REGISTRY_V2"
   
   - name: "quay-proxy"
