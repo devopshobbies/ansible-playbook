@@ -95,4 +95,4 @@ networks:
   psql_net:
     name: psql_net
     driver: bridge 
-
+    external: false

@@ -67,3 +67,7 @@ networks:
     name: redis_net
     driver: bridge
     external: false
+  traefik_net:
+    name: traefik_net
+    driver: bridge
+    external: true
