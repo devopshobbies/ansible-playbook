@@ -5,7 +5,7 @@ image: 'docker:29'
 
 stages:
   - build
-  #- deploy
+  - deploy
 
 variables:
   VERSION: v1.0.0
@@ -38,37 +38,30 @@ build-result:
   extends: .build_template
   variables:
     APP_NAME: result
+####################################
+###################################
 
-#deploy:
-#  stage: deploy
-#  variables:
-#    DEPLOY_PATH: '/opt/DecisionDeck'
-#    # نکته: جای user@ip آدرس واقعی سرور خود را بگذارید
-#    SSH: '-o StrictHostKeyChecking=no root@YOUR_SERVER_IP' 
-#  before_script:
-#    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-#    - eval $(ssh-agent -s)
-#    - echo "$SSH_PRIVATE_KEY" | ssh-add -
-#    - mkdir -p ~/.ssh
-#    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-#  script:
-#    - |
-#      ssh $SSH "
-#    
-#        echo '$NEXUS_PASSWORD' | docker login -u '$NEXUS_USER' --password-stdin $NEXUS_REGISTRY_URL
-#
-#        cd $DEPLOY_PATH
-#
-#       
-#        docker-compose pull
-#
-#        
-#        docker-compose down
-#        docker-compose up -d
-#
-#        
-#        docker system prune -a --force
-#      "
-#  tags:
-#    - devopshobbies-runner
-#
+deploy:
+  stage: deploy
+  variables:
+    TAG_COMMIT: $CI_REGISTRY_IMAGE
+    DEPLOY_PATH: '/opt/projects/app'
+    SSH: '-o StrictHostKeyChecking=no user@ip'
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - |
+        ssh $SSH "
+          docker login -u "$NEXUS_USER" --password-stdin $NEXUS_REGISTRY_URL
+          cd $DEPLOY_PATH
+          docker compose  pull
+          docker compose  down
+          docker compose up -d
+          docker system prune -a --force
+        "
+  tags:
+    - devopshobbies-runner
