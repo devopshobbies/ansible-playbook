@@ -395,7 +395,7 @@ The Ansible role performs these steps:
 
 Install the collection:
 ```bash
-ansible-playbook playbook/nexussetup.yml -i inventory/inventory.yml
+ansible-playbook playbook/nexusSetup.yml -i inventory/inventory.yml
 ```
 
 
