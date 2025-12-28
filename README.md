@@ -362,3 +362,40 @@ docker_default_image: "ubuntu:20.04"
 ```
 ---
 # Session 4 - Nexus 
+
+### Nexus Repository Manager (Docker) Provisioned with Ansible
+
+This project provisions **Sonatype Nexus Repository Manager** using **Docker Compose** and configures a **Docker Hosted repository** automatically via **Ansible**.
+
+---
+
+## What this automation does
+
+The Ansible role performs these steps:
+
+1. **Creates the project directory** on the target host (`{{ project_path }}`).
+2. **Copies the entire role `files/` directory** into the project directory.
+3. **Brings up the Nexus stack** using Docker Compose v2 (`compose.yml`).
+4. **Creates a Docker Hosted repository** in Nexus using the REST API:
+   - Repository name: `docker-hosted`
+   - HTTP port: `8083`
+   - `forceBasicAuth: true`
+   - `v1Enabled: false`
+
+---
+
+## Requirements
+
+- Ansible installed on the control machine
+- Target host:
+  - Docker Engine installed
+  - Docker Compose v2 installed
+- Ansible collection:
+  - `community.docker`
+
+Install the collection:
+```bash
+ansible-playbook playbook/nexussetup.yml -i inventory/inventory.yml
+```
+
+
