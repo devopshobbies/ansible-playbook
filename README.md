@@ -399,7 +399,7 @@ ansible-playbook playbook/nexusSetup.yml -i inventory/inventory.yml
 ```
 # Session 5-6 Deploy Voting-app
 
-## Voting App Infrastructure
+## Voting App Architecture
 
 ![Architecture Diagram](./image.png)
 
