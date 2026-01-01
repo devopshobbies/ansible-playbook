@@ -403,7 +403,7 @@ ansible-playbook playbook/nexusSetup.yml -i inventory/inventory.yml
 
 ![Architecture Diagram](./image.png)
 
-The **Voting App** is a demonstration of a modern cloud-native application, structured around microservices to ensure scalability, high availability, and resilience. The architecture is optimized to run in a Docker Swarm environment, leveraging containerized services and cloud-native patterns to deliver a fault-tolerant voting platform.
+The **Voting App** is a demonstration of a modern cloud-native application, structured around microservices to ensure scalability, high availability, and resilience. The architecture is optimized to run in a Docker environment, leveraging containerized services and cloud-native patterns to deliver a fault-tolerant voting platform.
 
 This app includes a collection of microservices that work together to create a seamless voting experience. With **PostgreSQL** as the persistent database and **Redis** for fast in-memory storage and message brokering, the infrastructure is built to handle real-time voting processes efficiently.
 
@@ -412,7 +412,7 @@ This app includes a collection of microservices that work together to create a s
 The Voting App is a sample application developed to demonstrate:
 
 - **Microservices Architecture**: Each service runs independently, scaling as needed based on workload.
-- **Service Orchestration**: Managed through Docker Swarm, which ensures automatic recovery, scaling, and deployment of services.
+- **Service Orchestration**: Managed through Docker , which ensures automatic recovery, scaling, and deployment of services.
 - **Resilient Data Management**: Combining PostgreSQL and Redis to manage both temporary and permanent data storage with high availability.
 - **Dynamic Service Discovery**: Traefik, a dynamic reverse proxy, automatically routes and balances traffic across services, providing HTTPS termination and security through Let's Encrypt.
 
@@ -428,7 +428,7 @@ The Voting App is a sample application developed to demonstrate:
 
 ### 1. Traefik as Reverse Proxy
 
-**Traefik** is used for dynamic service discovery and routing within the Docker Swarm environment. It manages incoming requests, balancing them across services based on traffic and availability.
+**Traefik** is used for dynamic service discovery and routing within the Docker environment. It manages incoming requests, balancing them across services based on traffic and availability.
 
 - **SSL Support**: Traefik automatically generates and manages SSL certificates through Let's Encrypt, ensuring all communication is secure.
 - **Service Routing**: It defines routing rules for services based on hostnames, ensuring traffic is directed to the appropriate service (Voting or Results).
@@ -450,7 +450,7 @@ Redis operates as both a caching layer and a message broker, using a master-slav
 ## Key Features of the Voting App
 
 - **Microservices-Based**: Each service is independently deployable, allowing the infrastructure to scale efficiently.
-- **Scalable and Resilient**: With Docker Swarm managing service orchestration, the app is highly available and capable of handling increased traffic without downtime.
+- **Scalable and Resilient**: With Docker managing service orchestration, the app is highly available and capable of handling increased traffic without downtime.
 - **High Availability**: PostgreSQL and Redis are configured with high-availability mechanisms like replication and failover to ensure data is always accessible and the app remains operational.
 - **HTTPS Security**: Secure communication between users and services is ensured through Traefik’s integration with Let's Encrypt for automatic certificate management.
 
