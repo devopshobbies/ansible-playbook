@@ -1,3 +1,4 @@
-#SPDX-License-Identifier: MIT-0
 ---
-# tasks file for Observability
+- name: observability setup
+  import_tasks: composeObservability.yml
+  tags: observability_setup
